@@ -12,10 +12,13 @@ provider "google" {
   region  = "us-central1"
 }
 
-# Only this is needed now
 resource "google_artifact_registry_repository" "my_app_repo" {
   location      = "us-central1"
   repository_id = "my-app-repo"
   description   = "Go app docker images"
   format        = "DOCKER"
+}
+
+output "registry_url" {
+  value = "${google_artifact_registry_repository.my_app_repo.location}-docker.pkg.dev/${google_artifact_registry_repository.my_app_repo.project}/${google_artifact_registry_repository.my_app_repo.name}"
 }

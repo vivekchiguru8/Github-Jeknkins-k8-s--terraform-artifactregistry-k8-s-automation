@@ -1,7 +1,15 @@
 FROM jenkins/jenkins:lts
 USER root
-RUN apt-get update && apt-get install -y curl apt-transport-https ca-certificates gnupg lsb-release docker.io
-RUN curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
+
+# Install dependencies + docker + gcloud + kubectl + terraform
+RUN apt-get update && apt-get install -y \
+    curl apt-transport-https ca-certificates gnupg lsb-release docker.io unzip && \
+    curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add - && \
     echo "deb https://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
-    apt-get update && apt-get install -y google-cloud-sdk kubectl
+    apt-get update && apt-get install -y google-cloud-sdk kubectl && \
+    curl -fsSL https://releases.hashicorp.com/terraform/1.9.8/terraform_1.9.8_linux_amd64.zip -o /tmp/tf.zip && \
+    unzip /tmp/tf.zip -d /usr/local/bin && rm /tmp/tf.zip && \
+    usermod -aG docker jenkins && \
+    apt-get clean
+
 USER jenkins
