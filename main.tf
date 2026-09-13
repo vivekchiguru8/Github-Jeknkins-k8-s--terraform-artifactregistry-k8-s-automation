@@ -1,25 +1,21 @@
-package main
+terraform {
+  required_providers {
+    google = {
+      source  = "hashicorp/google"
+      version = "~> 5.0"
+    }
+  }
+}
 
-import (
-	"fmt"
-	"log"
-	"net/http"
-	"os"
-)
+provider "google" {
+  project = "project-10094705-9153-43d5-bb8"
+  region  = "us-central1"
+}
 
-func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello Chiguru Vivekananda Go on Cloud Run! Deployed from GitHub -> Cloud Build -> Artifact Registry\n")
-	})
-	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
-		w.WriteHeader(http.StatusOK)
-		w.Write([]byte("OK"))
-	})
-
-	port := os.Getenv("PORT")
-	if port == "" {
-		port = "8080"
-	}
-	log.Printf("Server starting on port %s", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+# Only this is needed now
+resource "google_artifact_registry_repository" "my_app_repo" {
+  location      = "us-central1"
+  repository_id = "my-app-repo"
+  description   = "Go app docker images"
+  format        = "DOCKER"
 }
