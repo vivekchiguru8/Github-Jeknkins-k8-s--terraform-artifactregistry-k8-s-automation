@@ -9,7 +9,7 @@ import (
 
 func main() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello  Vivekananda Go on Cloud Run! Deployed from GitHub -> Cloud Build -> Artifact Registry\n")
+		fmt.Fprintf(w, "Hello Chiguru  Vivekananda Go on Cloud Run! Deployed from GitHub -> Cloud Build -> Artifact Registry\n")
 	})
 	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
