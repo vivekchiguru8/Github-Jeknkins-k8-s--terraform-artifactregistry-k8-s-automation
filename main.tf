@@ -13,6 +13,7 @@ resource "google_container_cluster" "primary" {
   name     = "my-go-cluster"
   location = "asia-south1-a"
   initial_node_count = 2
+  deletion_protection = false
   node_config {
     machine_type    = "e2-medium"
     disk_size_gb    = 30
